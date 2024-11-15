@@ -7,6 +7,12 @@ def is_grid_full(grid):
         if L[i] == 0:
             return False
     return True
+def move_possible_move(grid,d):
+    if fonc4.move_grid(grid,d)!=grid:
+        return True
+    return False
+
+
 
 def move_possible(grid):
     for d in {"left","right","up","down"}:
