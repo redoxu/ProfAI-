@@ -36,7 +36,29 @@ def dataset_maker(n_lines = 3, convos = {}):
     return dataset
 
 convos = convos_extractor()
-dataset = dataset_maker(6, convos)
+dataset = dataset_maker(8, convos)
+import json
 
-for i in range(30):
-    print(dataset[i])
+# Your original data (replace this with loading from your file if needed)
+
+converted_data = []
+
+for entry in dataset:
+    user_content = "\n".join(entry["input"])
+    # Wrap user content inside <think> tags
+    user_content_wrapped = f"/no_think{user_content}"
+    
+    assistant_content = entry["output"]
+    # Wrap assistant content with empty <think> and <answer> tags
+    assistant_content_wrapped = f"<think>\n\n</think>\n<answer>\n{assistant_content}\n</answer>"
+    
+    converted_data.append({
+        "messages": [
+            {"role": "user", "content": user_content_wrapped},
+            {"role": "assistant", "content": assistant_content_wrapped}
+        ]
+    })
+
+with open("output.json", "w", encoding="utf-8") as f:
+    json.dump(converted_data, f, ensure_ascii=False, indent=2)
+
